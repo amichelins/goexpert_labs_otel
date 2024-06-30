@@ -1,0 +1,14 @@
+##### Cep errado
+POST http://localhost:8000/temp_cep
+Host: localhost:8000
+Content-Type: application/json
+
+{ "cep": "00123456" }
+
+##### Cep Correto
+POST http://localhost:8000/temp_cep
+Host: localhost:8000
+Content-Type: application/json
+
+{ "cep": "91040300" }
+

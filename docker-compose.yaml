@@ -1,0 +1,37 @@
+services:
+  zipkin:
+    image: openzipkin/zipkin:latest
+    restart: always
+    ports:
+      - "9411:9411"
+
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    volumes:
+      - ./docker/otelcollector.yaml:/etc/otel/otel-config.yaml
+    command: ["--config=/etc/otel/otel-config.yaml"]
+    ports:
+      - 4317:4317
+      - 55679:55679
+
+  servico-req:
+    build: ./servicos/servico_req
+    environment:
+      - EXTERNAL_CALL_URL=http://servico-orc:8080/temp_cep
+      - OTEL_SERVICE_NAME=servico-req
+      - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+    ports:
+      - 8000:8000
+    depends_on:
+      - otel-collector
+
+  servico-orc:
+    build: ./servicos/servico_orc
+    environment:
+      - OTEL_SERVICE_NAME=servico-orc
+      - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+      - WEATHER_API_KEY=545c605410b74c09a2921907241506
+    ports:
+      - 8080:8080
+    depends_on:
+      - otel-collector

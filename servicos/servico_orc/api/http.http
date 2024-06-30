@@ -1,0 +1,13 @@
+### Cep errado
+POST http://localhost:8080/temp_cep
+Host: localhost:8080
+Content-Type: application/x-www-form-urlencoded
+
+cep=00123456
+
+### Cep Correto
+POST http://localhost:8080/temp_cep
+Host: localhost:8080
+Content-Type: application/x-www-form-urlencoded
+
+cep=91040300
