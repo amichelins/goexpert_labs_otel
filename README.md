@@ -35,3 +35,10 @@ Chamada:
 Build:
     docker compose up --build -d -V
 
+
+
+-------------------------------------------------
+As imagens em anexo mostram o ZipKin funcionado
+-------------------------------------------------
+ZipKin*.png
+VsCod_http_Call.png
