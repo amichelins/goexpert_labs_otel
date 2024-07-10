@@ -41,16 +41,16 @@ func (ws *Webserver) CreateServer() *chi.Mux {
 
 func (ws *Webserver) TempCep(w http.ResponseWriter, r *http.Request) {
     ctx := r.Context()
+    ctx, spanTotal := ws.OTELTracer.Start(ctx, "servico-req_total")
+    defer spanTotal.End()
 
     ctx, spanInicial := ws.OTELTracer.Start(ctx, "servico-req")
-    time.Sleep(time.Second)
-
-    spanInicial.End()
-
+    time.Sleep(time.Duration(56 * time.Millisecond))
     data, err := io.ReadAll(r.Body)
 
     if err != nil {
         http.Error(w, presenters.ToJson(dto.GeneralResponseError{Msg: "Read body error"}), http.StatusInternalServerError)
+        spanInicial.End()
         return
     }
 
@@ -58,6 +58,7 @@ func (ws *Webserver) TempCep(w http.ResponseWriter, r *http.Request) {
 
     if err != nil {
         http.Error(w, presenters.ToJson(dto.GeneralResponseError{Msg: "Json parse error"}), http.StatusInternalServerError)
+        spanInicial.End()
         return
     }
 
@@ -65,8 +66,10 @@ func (ws *Webserver) TempCep(w http.ResponseWriter, r *http.Request) {
 
     if !req.Valida() {
         http.Error(w, presenters.ToJson(dto.GeneralResponseError{Msg: "Invalid zipcode"}), http.StatusUnprocessableEntity)
+        spanInicial.End()
         return
     }
+    spanInicial.End()
 
     Response, err := req.CallServicoOrc()
 

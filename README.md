@@ -42,3 +42,11 @@ As imagens em anexo mostram o ZipKin funcionado
 -------------------------------------------------
 ZipKin*.png
 VsCod_http_Call.png
+
+Adicionadas as imagens ZipKin_2*.png demostrando o span do processo completo
+Modificado o sleep de 1s para 56 milisegundos
+
+------
+UPDATE
+------
+Mais opções no http.http do servico_req
